@@ -1,0 +1,26 @@
+
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: triton
+endpoint_name: multi-model-triton-byoc
+model:
+   name: my-multi-model
+   version: 1
+   local_path: "./models"
+environment:
+  name: multi-model-triton-env
+  version: 1
+  image: mirmasteracr.azurecr.io/multi-model-triton:latest
+  os_type: linux
+  inference_config:
+    liveness_route:
+      port: 9000
+      path: /v2/health/live
+    readiness_route:
+      port: 9000
+      path: /v2/health/ready
+    scoring_route:
+      port: 9000
+      path: /v2/models
+instance_type: Standard_F2s_v2
+instance_count: 1
+
